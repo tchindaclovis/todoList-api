@@ -30,9 +30,6 @@ public class Task {
     private String title;
 
     @Column(length = 2000)
-    private String designation;
-
-    @Column(length = 2000)
     private String description;
 
     @Enumerated(EnumType.STRING)

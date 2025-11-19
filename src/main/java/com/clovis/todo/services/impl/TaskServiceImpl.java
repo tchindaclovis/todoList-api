@@ -1,10 +1,13 @@
 package com.clovis.todo.services.impl;
 
+import com.clovis.todo.exception.ErrorCodes;
 import com.clovis.todo.dto.TaskDto;
+import com.clovis.todo.exception.InvalidEntityException;
 import com.clovis.todo.models.Task;
 import com.clovis.todo.models.TaskStatus;
 import com.clovis.todo.repository.TaskRepository;
 import com.clovis.todo.services.TaskService;
+import com.clovis.todo.validator.TaskValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -22,12 +25,14 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDto createTask(TaskDto dto) {
-        Task task = TaskDto.toEntity(dto);
+//        Task task = TaskDto.toEntity(dto);
+        List<String> errors = TaskValidator.validate(dto);
+        if(!errors.isEmpty()){
+            log.error("Task is not valid{}", dto);
+            throw new InvalidEntityException("La tache n'est pas valide", ErrorCodes.TASK_NOT_VALID, errors);
+        }
 
-        // IMPORTANT !!
-//        task.setId(null);
-
-        return TaskDto.fromEntity(taskRepository.save(task));
+        return TaskDto.fromEntity(taskRepository.save(TaskDto.toEntity(dto)));
     }
 
 
@@ -72,7 +77,6 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() -> new RuntimeException("Aucune tache trouvée avec ID " + id));
 
         existing.setTitle(dto.getTitle());
-        existing.setDesignation(dto.getDesignation());
         existing.setDescription(dto.getDescription());
         existing.setStatus(dto.getStatus());
 
