@@ -16,8 +16,6 @@ public class TaskDto {
 
     private String title;
 
-    private String designation;
-
     private String description;
 
     private TaskStatus status;
@@ -31,7 +29,6 @@ public class TaskDto {
         return TaskDto.builder()
                 .id(task.getId())
                 .title(task.getTitle())
-                .designation(task.getDesignation())
                 .description(task.getDescription())
                 .status(task.getStatus())
                 .build();
@@ -44,7 +41,6 @@ public class TaskDto {
         Task task = new Task();
         task.setId(taskDto.getId());
         task.setTitle(taskDto.getTitle());
-        task.setDesignation(taskDto.getDesignation());
         task.setDescription(taskDto.getDescription());
         task.setStatus(taskDto.getStatus());
         return task;

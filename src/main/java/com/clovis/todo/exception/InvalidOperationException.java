@@ -1,6 +1,6 @@
 package com.clovis.todo.exception;
 
-import ch.qos.logback.core.spi.ErrorCodes;
+import com.clovis.todo.exception.ErrorCodes;
 import lombok.Getter;
 
 public class InvalidOperationException extends RuntimeException{
